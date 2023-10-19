@@ -83,6 +83,7 @@ class Boid:
             self.x_vel += (self.xpos_avg - self.x_pos) * self.centering_factor
             self.y_vel += (self.ypos_avg - self.y_pos) * self.centering_factor
 
+        # turn back at margin
         if self.x_pos < margin:
             self.x_vel += self.turnfactor
         elif self.x_pos > x_dim - margin:
@@ -102,6 +103,7 @@ class Boid:
             self.x_vel = int((self.x_vel / speed) * self.min_speed)
             self.y_vel = int((self.y_vel / speed) * self.min_speed)
 
+        # update position
         self.x_pos = self.x_pos + self.x_vel
         self.y_pos = self.y_pos + self.y_vel
 
