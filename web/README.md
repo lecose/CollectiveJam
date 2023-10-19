@@ -35,4 +35,4 @@ cp ../webchuck/src/{webchuck_host.js,webchuck.js,webchuck.wasm} ./src
 ```
 python3 -m http.server 8080
 ```
-9 - Connect to the local server ('http://localhost:8080')on any browser and try the demo
+9 - Connect to the local server ('http://localhost:8080') on any browser and try the demo
