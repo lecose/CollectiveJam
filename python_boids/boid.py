@@ -13,23 +13,23 @@ class Boid:
 
     max_speed: int
     min_speed: int
-    turnfactor: int
+    turnfactor: float
 
     # separation variables
     close_dx: int
     close_dy: int
-    avoid_factor: int
+    avoid_factor: float
 
     # alignment variables
     xvel_avg: int
     yvel_avg: int
     neighboring_boids: int
-    matching_factor: int
+    matching_factor: float
 
     # cohesion variables
     xpos_avg: int
     ypos_avg: int
-    centering_factor: int
+    centering_factor: float
 
     # rendering variables
     color: Tuple
