@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<script type="text/javascript" src="./src/webchuck_host.js"></script>
+<script type="text/javascript", src="./boids.js"></script>
+
+<body>
+
+<h1>BOIDS</h1>
+
+<input id="startButton" type="button" value="Start Simulation"/>
+
+<script>
+    var serverFilesToPreload = [
+            {
+                serverFilename: './musical_boids.ck',
+                virtualFilename: 'boids.ck'
+            }
+        ];
+    var startButton = document.getElementById( "startButton" );
+    startButton.addEventListener( "click", async function() {
+        await preloadFilenames( serverFilesToPreload );
+        await startChuck();
+        await theChuckReady;
+        await theChuck.runFile( "boids.ck" );
+        run_simulation()
+        startButton.disabled = true;
+    });
+</script>
+
+</body>
+</html>

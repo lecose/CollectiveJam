@@ -22,17 +22,21 @@ npm install
 ```
 npm run build
 ```
-6 - In the web folder of this project repository, make a new folder 'src'
+6 - Clone this repository
 ```
-cd collective_jam/web
+git clone git@github.com:lecose/CollectiveJam.git
+cd CollectiveJam
+```
+7 - Make a new folder 'src'
+```
 mkdir src
 ```
-7 - Copy the files 'webchuck_host.js', 'webchuck.js' and 'webchuck.wasm' from the 'webchuck/src' folder in the new 'src' folder of this project
+8 - Copy the files 'webchuck_host.js', 'webchuck.js' and 'webchuck.wasm' from the 'webchuck/src' folder in the new 'src' folder of this project
 ```
 cp ../webchuck/src/{webchuck_host.js,webchuck.js,webchuck.wasm} ./src
 ```
-8 - Setup a local server
+9 - Setup a local server
 ```
 python3 -m http.server 8080
 ```
-9 - Connect to the local server ('http://localhost:8080') on any browser and try the demo
+10 - Connect to the local server ('http://localhost:8080') on any browser and try the demo
