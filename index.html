@@ -1,32 +1,46 @@
 <!DOCTYPE html>
 <html>
 
-<script type="text/javascript" src="./src/webchuck_host.js"></script>
-<script type="text/javascript", src="./boids.js"></script>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="style.css" rel="stylesheet">
+    </head>
 
-<body>
+    <body>
+        <canvas class="myCanvas">
+            <p>Add suitable fallback here.</p>
+        </canvas>
 
-<h1>BOIDS</h1>
+        <script type="text/javascript" src="./src/webchuck_host.js"></script>
+        <script type="text/javascript", src="./boids.js"></script>
 
-<input id="startButton" type="button" value="Start Simulation"/>
+        <input id="startButton" type="button" value="Start Simulation"/>
+        <input id="pauseButton" type="button" value="Pause Simulation" disabled="true"/>
 
-<script>
-    var serverFilesToPreload = [
-            {
-                serverFilename: './musical_boids.ck',
-                virtualFilename: 'boids.ck'
-            }
-        ];
-    var startButton = document.getElementById( "startButton" );
-    startButton.addEventListener( "click", async function() {
-        await preloadFilenames( serverFilesToPreload );
-        await startChuck();
-        await theChuckReady;
-        await theChuck.runFile( "boids.ck" );
-        run_simulation()
-        startButton.disabled = true;
-    });
-</script>
-
-</body>
+        <script>
+            var serverFilesToPreload = [
+                    {
+                        serverFilename: './musical_boids.ck',
+                        virtualFilename: 'boids.ck'
+                    }
+                ];
+            var startButton = document.getElementById( "startButton" );
+            var pauseButton = document.getElementById( "pauseButton" );
+            startButton.addEventListener( "click", async function() {
+                await preloadFilenames( serverFilesToPreload );
+                await startChuck();
+                await theChuckReady;
+                await theChuck.runFile( "boids.ck" );
+                pause = false;
+                run_simulation();
+                startButton.disabled = true;
+                pauseButton.disabled = false;
+            });
+            pauseButton.addEventListener( "click", async function() {
+                pause = true;
+                startButton.disabled = false;
+                pauseButton.disabled = true;
+            });
+        </script>
+    </body>
 </html>

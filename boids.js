@@ -46,6 +46,7 @@ class Boid {
             }
             if(dist < this.visible_range)
             {
+                this.num_neighbors += 1;
                 this.check_alignment(other_boids[i]);
                 this.check_cohesion(other_boids[i]);
             }
@@ -125,10 +126,10 @@ class Boid {
         this.ypos_avg += other_boid.y_pos;
     }
 
-    manhattan_dist(othe_boid)
+    manhattan_dist(other_boid)
     {
-        return Math.abs(this.x_pos - othe_boid.x_pos) +
-                Math.abs(this.y_pos - othe_boid.y_pos);
+        return Math.abs(this.x_pos - other_boid.x_pos) +
+                Math.abs(this.y_pos - other_boid.y_pos);
     }
 }
 
@@ -138,9 +139,7 @@ function update_flock(boids)
 {
     for(let i = 0; i < boids.length; i++)
     {
-        // console.log("Boid " + i + ": (" + boids[i].x_pos + ", " + boids[i].y_pos + ")");
-        const other_boids = boids.slice();
-        boids[i].update(other_boids.splice(i, 1));
+        boids[i].update(boids.toSpliced(i, 1));
     }
 }
 
@@ -156,41 +155,64 @@ function get_positions(boids)
     return [pos_x, pos_y];
 }
 
+
+function degToRad(degrees) {
+    return (degrees * Math.PI) / 180;
+}
+
 function run_simulation()
 {
+    update_flock(boids);
     positions = get_positions(boids);
+
+    // update chuck
     theChuck.setIntArray("x_pos", positions[0]);
     theChuck.setIntArray("y_pos", positions[1]);
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.fillStyle = "rgb(0, 255, 0)";
     
-    for(let i = 0; i < 10; i++)
+    for(let i = 0; i < positions[0].length; i++)
     {
-        // theChuck.getIntArray("x_pos").then((value) => console.log("X: " + value));
-        // theChuck.getIntArray("y_pos").then((value) => console.log("Y: " + value));
-        update_flock(boids);
-        positions = get_positions(boids);
-        theChuck.setIntArray("x_pos", positions[0]);
-        theChuck.setIntArray("y_pos", positions[1]);
+        ctx.beginPath();
+        ctx.arc(positions[0][i], positions[1][i], 10, degToRad(0), degToRad(360), false);
+        ctx.fill();
+    }
+
+    if(!pause)
+    {
+        window.requestAnimationFrame(run_simulation);
     }
 }
 
+// visualization
+const canvas = document.querySelector(".myCanvas");
+const width = (canvas.width = window.innerWidth);
+const height = (canvas.height = window.innerHeight - 100);
 
-x_dim = 1000;
-y_dim = 700;
+const ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "rgb(0, 0, 0)";
+ctx.fillRect(0, 0, width, height);
+
 margin = 50
 
-max_speed = 10;
-min_speed = 0;
+max_speed = 5;
+min_speed = 1;
 avoid_factor = 0.06;
 matching_factor = 0.2;
 centering_factor = 0.003;
-turnfactor = 2.5;
-protected_range = 50;
-visible_range = 70;
+turnfactor = 2;
+protected_range = 30;
+visible_range = 60;
 
-num_boids = 10;
+num_boids = 50;
 var boids = [];
 for(let i = 0; i < num_boids; i++)
 {
-    boids[i] = new Boid(x_dim, y_dim, margin, max_speed, min_speed, turnfactor,
+    boids[i] = new Boid(width, height, margin, max_speed, min_speed, turnfactor,
         avoid_factor, matching_factor, centering_factor, protected_range, visible_range);
 }
