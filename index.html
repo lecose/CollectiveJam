@@ -7,7 +7,7 @@
     </head>
 
     <body>
-        <canvas class="myCanvas">
+        <canvas id="boidsCanvas" class="myCanvas">
             <p>Add suitable fallback here.</p>
         </canvas>
 
@@ -38,9 +38,21 @@
             });
             pauseButton.addEventListener( "click", async function() {
                 pause = true;
+                theChuck.clearChuckInstance()
                 startButton.disabled = false;
                 pauseButton.disabled = true;
             });
+            function getMousePos(canvas, evt) {
+                var rect = canvas.getBoundingClientRect();
+                return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+                };
+            }
+            var mousePos = {x: -100, y: -100};
+            canvas.addEventListener('mousemove', function(evt) {
+                mousePos = getMousePos(canvas, evt);
+            }, false);
         </script>
     </body>
 </html>

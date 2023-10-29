@@ -2,7 +2,7 @@
 class Boid {
     constructor(x_dim, y_dim, margin, max_speed, min_speed, turnfactor,
                 avoid_factor, matching_factor, centering_factor,
-                protected_range, visible_range){
+                protected_range, visible_range, interaction_range, interaction_factor){
         this.x_dim = x_dim;
         this.y_dim = y_dim;
         this.margin = margin;
@@ -25,6 +25,8 @@ class Boid {
         this.ypos_avg = 0;
         this.protected_range = protected_range;
         this.visible_range = visible_range;
+        this.interaction_range = interaction_range;
+        this.interaction_factor = interaction_factor;
     }
 
     update(other_boids){
@@ -39,7 +41,7 @@ class Boid {
 
         for(let i = 0; i < other_boids.length; i++)
         {
-            let dist = this.manhattan_dist(other_boids[i]);
+            let dist = this.manhattan_dist(other_boids[i].x_pos, other_boids[i].y_pos);
             if(dist < this.protected_range)
             {
                 this.check_separation(other_boids[i]);
@@ -70,6 +72,9 @@ class Boid {
             this.x_vel += (this.xpos_avg - this.x_pos) * self.centering_factor;
             this.y_vel += (this.ypos_avg - this.y_pos) * self.centering_factor;
         }
+
+        // interaction
+        this.check_interaction();
 
         // turn back at margin
         if(this.x_pos < this.margin)
@@ -126,10 +131,20 @@ class Boid {
         this.ypos_avg += other_boid.y_pos;
     }
 
-    manhattan_dist(other_boid)
+    check_interaction()
     {
-        return Math.abs(this.x_pos - other_boid.x_pos) +
-                Math.abs(this.y_pos - other_boid.y_pos);
+        var dist = this.manhattan_dist(mousePos.x, mousePos.y);
+        if(dist < this.interaction_range)
+        {
+            this.x_vel += (mousePos.x - this.x_pos) * self.interaction_factor;
+            this.y_vel += (mousePos.y - this.y_pos) * self.interaction_factor;
+        }
+    }
+
+    manhattan_dist(other_x, other_y)
+    {
+        return Math.abs(this.x_pos - other_x) +
+                Math.abs(this.y_pos - other_y);
     }
 }
 
@@ -213,10 +228,14 @@ turnfactor = 2;
 protected_range = 30;
 visible_range = 60;
 
+interaction_range = 500;
+interaction_factor = 0.001;
+
 num_boids = 50;
 var boids = [];
 for(let i = 0; i < num_boids; i++)
 {
     boids[i] = new Boid(width, height, margin, max_speed, min_speed, turnfactor,
-        avoid_factor, matching_factor, centering_factor, protected_range, visible_range);
+        avoid_factor, matching_factor, centering_factor, protected_range, visible_range, 
+        interaction_range, interaction_factor);
 }
