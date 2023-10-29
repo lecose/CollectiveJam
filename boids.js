@@ -162,6 +162,10 @@ function degToRad(degrees) {
 
 function run_simulation()
 {
+    theChuck.setInt("num_boids", num_boids);
+    theChuck.setInt("width", width);
+    theChuck.setInt("height", height);
+
     update_flock(boids);
     positions = get_positions(boids);
 
